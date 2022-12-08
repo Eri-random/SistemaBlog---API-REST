@@ -1,6 +1,6 @@
 package com.sistema.blog.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Comentario")

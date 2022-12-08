@@ -4,10 +4,11 @@ import com.sistema.blog.DTO.PublicacionDTO;
 import com.sistema.blog.DTO.PublicacionRespuesta;
 import com.sistema.blog.service.PublicacionService;
 import com.sistema.blog.util.AppConstantes;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,17 +34,20 @@ public class PublicacionController {
         return ResponseEntity.ok(publicacionService.obtenerPublicacionPorId(id));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PublicacionDTO> guardarPublicacion(@Valid @RequestBody PublicacionDTO publicacionDTO){
         return new ResponseEntity<>(publicacionService.crearPublicacion(publicacionDTO), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PublicacionDTO> actualizarPublicacion(@PathVariable(value = "id") Long id, @Valid @RequestBody PublicacionDTO publicacionRequest){
         PublicacionDTO publicacionRespuesta = publicacionService.actualizarPublicacion(publicacionRequest,id);
         return new ResponseEntity<>(publicacionRespuesta,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarPublicacion(@PathVariable(value = "id") Long id){
         publicacionService.EliminarPublicacion(id);
